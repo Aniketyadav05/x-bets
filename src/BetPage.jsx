@@ -1,35 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Modal from 'react-modal'; 
-import { motion } from 'framer-motion'; // Framer Motion for animation
+import { motion } from 'framer-motion'; 
 import { FaTrophy } from 'react-icons/fa';
 import { Chart, registerables } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns';
+import { BalanceContext } from './components/BalanceContext';
 
 Chart.register(...registerables);
-Modal.setAppElement('#root'); // Set the app element for accessibility
+Modal.setAppElement('#root'); 
 
 const customModalStyles = {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dark background for overlay
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   content: {
-    top: '50%', // Center vertically
-    left: '50%', // Center horizontally
+    top: '50%', 
+    left: '50%', 
     right: 'auto',
     bottom: 'auto',
-    marginRight: '-50%', // Adjust position
-    transform: 'translate(-50%, -50%)', // Centering transform
-    padding: '20px', // Padding inside modal
-    borderRadius: '8px', // Rounded corners
-    backgroundColor: '#fff', // White background
-    color: '#000', // Text color
-    width: '400px', // Width of the modal
-    maxWidth: '90%', // Responsive width
+    marginRight: '-50%', 
+    transform: 'translate(-50%, -50%)', 
+    padding: '20px',
+    borderRadius: '8px',
+    backgroundColor: '#fff',
+    color: '#000',
+    width: '400px',
+    maxWidth: '90%',
   },
 };
 
-const BetPage = ({ stockName }) => {
+const BetPage = ({ selectedCoin }) => {
+  const { balance, setBalance } = useContext(BalanceContext);
   const [showOptions, setShowOptions] = useState(null);
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [selectedLeverage, setSelectedLeverage] = useState(null);
@@ -38,19 +40,20 @@ const BetPage = ({ stockName }) => {
   const [currentPrice, setCurrentPrice] = useState(0);
   const [profitLoss, setProfitLoss] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState(''); // New state for modal message
-  const [isProfit, setIsProfit] = useState(false); // State to track if profit was made
+  const [modalMessage, setModalMessage] = useState('');
+  const [isProfit, setIsProfit] = useState(false);
+  const [lineColor, setLineColor] = useState('rgba(75,192,192,1)'); // Default color
 
   const amountOptions = [50, 100, 500, 1000];
   const leverageOptions = [1, 5, 10, 20, 50, 100];
 
   const currentTime = new Date();
-  const dataPoints = 20;
+  const dataPoints = 50;
 
   const generatePriceData = (initialPrice = 50) => {
     return Array.from({ length: dataPoints }, (_, index) => {
       const time = new Date(currentTime.getTime() + index * 2 * 60 * 1000);
-      const price = initialPrice + Math.floor(Math.random() * 10 - 5); // Slight random fluctuation
+      const price = initialPrice + Math.floor(Math.random() * 10 - 5);
       return { x: time.toISOString(), y: price };
     });
   };
@@ -61,22 +64,26 @@ const BetPage = ({ stockName }) => {
     const latestPrice = priceData[priceData.length - 1].y;
     setCurrentPrice(latestPrice);
 
-    // Update profit/loss after the price changes
+    // Update color based on the latest price compared to purchasePrice
     if (purchasePrice !== null) {
       const profitOrLoss = latestPrice - purchasePrice;
-      setProfitLoss(profitOrLoss * selectedLeverage); // Leverage is taken into account
+      setProfitLoss(profitOrLoss * selectedLeverage);
+      
+      // Change line color based on price movement
+      setLineColor(profitOrLoss > 0 ? 'rgba(75,192,192,1)' : 'rgba(255, 99, 132, 1)');
     }
-  }, [priceData, purchasePrice, selectedLeverage]);
 
-  const lineColor =
-    priceData[0].y < priceData[priceData.length - 1].y
-      ? 'rgba(75,192,192,1)'
-      : 'rgba(255, 99, 132, 1)';
+    // If the sell price is set, change the color based on its value
+    if (sellPrice !== null) {
+      setLineColor(latestPrice > sellPrice ? 'rgba(75,192,192,1)' : 'rgba(255, 99, 132, 1)');
+    }
+
+  }, [priceData, purchasePrice, selectedLeverage, sellPrice]);
 
   const data = {
     datasets: [
       {
-        label: `${stockName}`,
+        label: '',
         data: priceData,
         fill: false,
         borderColor: lineColor,
@@ -119,15 +126,20 @@ const BetPage = ({ stockName }) => {
     setPurchasePrice(latestPrice);
     setSellPrice(null);
 
-    // Manipulate stock price to go up after buying
+    // Simulate a price increase after buying
+    const randomIncrease = Math.floor(Math.random() * 10) + 1; // Random increase between 1 to 10
     const increasedPriceData = priceData.map((dataPoint, index) =>
       index === priceData.length - 1
-        ? { ...dataPoint, y: dataPoint.y + Math.floor(Math.random() * 10 + 5) }
+        ? { ...dataPoint, y: dataPoint.y + randomIncrease }
         : dataPoint
     );
     setPriceData(increasedPriceData);
+    
+    const profit = randomIncrease * selectedLeverage; 
+    setBalance((prevBalance) => prevBalance + profit); // Increase balance by profit amount
 
-    setModalMessage(`You made a Profit of ₹${latestPrice}.`);
+    setModalMessage(`💸 You made a profit of ₹${profit.toFixed(2)}!`);
+    setIsProfit(true);
     setModalIsOpen(true);
   };
 
@@ -135,23 +147,29 @@ const BetPage = ({ stockName }) => {
     const latestPrice = priceData[priceData.length - 1].y;
     setSellPrice(latestPrice);
 
-    // Manipulate stock price to go down after selling
+    // Simulate a price decrease after selling
+    const randomDecrease = Math.floor(Math.random() * 10) + 1; // Random decrease between 1 to 10
     const decreasedPriceData = priceData.map((dataPoint, index) =>
       index === priceData.length - 1
-        ? { ...dataPoint, y: dataPoint.y - Math.floor(Math.random() * 10 + 5) }
+        ? { ...dataPoint, y: dataPoint.y - randomDecrease }
         : dataPoint
     );
     setPriceData(decreasedPriceData);
 
-    // Calculate profit or loss
-    const profit = (latestPrice - purchasePrice) * selectedLeverage;
+    const profit = (latestPrice - purchasePrice) * selectedLeverage - randomDecrease; // Adjust profit by random decrease
     const isProfitMade = profit >= 0;
     setIsProfit(isProfitMade);
+
+    if (isProfitMade) {
+      setBalance((prevBalance) => prevBalance + profit); // Increase balance by profit amount
+    } else {
+      setBalance((prevBalance) => prevBalance - Math.abs(profit)); // Decrease balance by the loss amount
+    }
 
     setModalMessage(
       isProfitMade
         ? `💸 You made a profit of ₹${profit.toFixed(2)}!`
-        : `💸 You made a profit of ₹${Math.abs(profit).toFixed(2)}.`
+        : `💸 You lost ₹${Math.abs(profit).toFixed(2)}.`
     );
     setModalIsOpen(true);
   };
@@ -162,13 +180,11 @@ const BetPage = ({ stockName }) => {
 
   return (
     <div className="flex">
-      {/* Left Side - Graph */}
       <div className="flex-1 p-4">
-        <h2 className="text-xl font-semibold">{stockName}</h2>
+        <h2 className="text-xl font-semibold">Your Balance: ₹{balance}</h2>
         <Line data={data} options={options} />
       </div>
 
-      {/* Right Side - Buy/Sell Buttons */}
       <div className="w-72 p-4">
         <h3 className="text-lg font-bold text-[#FF204E] mb-4">Actions</h3>
         <button
@@ -184,7 +200,6 @@ const BetPage = ({ stockName }) => {
           <span className="font-bold">📉 Sell</span>
         </button>
 
-        {/* Show buy/sell options */}
         {showOptions === 'buy' && (
           <div className="border border-gray-300 p-4 rounded-lg bg-gray-50">
             <h4 className="font-semibold">Select Amount</h4>
@@ -193,9 +208,7 @@ const BetPage = ({ stockName }) => {
                 <button
                   key={amount}
                   onClick={() => setSelectedAmount(amount)}
-                  className={`py-2 border border-gray-300 rounded-lg hover:bg-green-200 transition ${
-                    selectedAmount === amount ? 'bg-green-400' : ''
-                  }`}
+                  className={`py-2 border border-gray-300 rounded-lg hover:bg-green-200 transition ${selectedAmount === amount ? 'bg-green-400' : ''}`}
                 >
                   {amount} Rupees
                 </button>
@@ -207,9 +220,7 @@ const BetPage = ({ stockName }) => {
                 <button
                   key={leverage}
                   onClick={() => setSelectedLeverage(leverage)}
-                  className={`py-2 border border-gray-300 rounded-lg hover:bg-green-200 transition ${
-                    selectedLeverage === leverage ? 'bg-green-400' : ''
-                  }`}
+                  className={`py-2 border border-gray-300 rounded-lg hover:bg-green-200 transition ${selectedLeverage === leverage ? 'bg-green-400' : ''}`}
                 >
                   {leverage}x
                 </button>
@@ -217,12 +228,14 @@ const BetPage = ({ stockName }) => {
             </div>
             <button
               onClick={handleBuy}
-              className="mt-4 w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              className={`mt-4 w-full py-2 bg-green-500 text-white rounded-lg transition ${!(selectedAmount && selectedLeverage) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-600'}`}
+              disabled={!selectedAmount || !selectedLeverage}
             >
               Confirm Buy
             </button>
           </div>
         )}
+
         {showOptions === 'sell' && (
           <div className="border border-gray-300 p-4 rounded-lg bg-gray-50">
             <h4 className="font-semibold">Select Amount</h4>
@@ -231,9 +244,7 @@ const BetPage = ({ stockName }) => {
                 <button
                   key={amount}
                   onClick={() => setSelectedAmount(amount)}
-                  className={`py-2 border border-gray-300 rounded-lg hover:bg-gray-200 transition ${
-                    selectedAmount === amount ? 'bg-gray-300' : ''
-                  }`}
+                  className={`py-2 border border-gray-300 rounded-lg hover:bg-red-200 transition ${selectedAmount === amount ? 'bg-red-400' : ''}`}
                 >
                   {amount} Rupees
                 </button>
@@ -245,9 +256,7 @@ const BetPage = ({ stockName }) => {
                 <button
                   key={leverage}
                   onClick={() => setSelectedLeverage(leverage)}
-                  className={`py-2 border border-gray-300 rounded-lg hover:bg-gray-200 transition ${
-                    selectedLeverage === leverage ? 'bg-gray-300' : ''
-                  }`}
+                  className={`py-2 border border-gray-300 rounded-lg hover:bg-red-200 transition ${selectedLeverage === leverage ? 'bg-red-400' : ''}`}
                 >
                   {leverage}x
                 </button>
@@ -255,7 +264,8 @@ const BetPage = ({ stockName }) => {
             </div>
             <button
               onClick={handleSell}
-              className="mt-4 w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              className={`mt-4 w-full py-2 bg-red-500 text-white rounded-lg transition ${!(selectedAmount && selectedLeverage) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
+              disabled={!selectedAmount || !selectedLeverage}
             >
               Confirm Sell
             </button>
@@ -263,26 +273,21 @@ const BetPage = ({ stockName }) => {
         )}
       </div>
 
-      {/* Modal */}
-      <Modal isOpen={modalIsOpen} onRequestClose={handleModalClose} style={customModalStyles}>
-        <motion.div
-          initial={{ scale: 0.7, opacity: 0 }} // Starting point for animation
-          animate={{ scale: 1, opacity: 1 }} // Final state
-          transition={{ duration: 0.5, ease: 'easeOut' }} // Smooth transition
-          className="text-center flex flex-col items-center "
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={handleModalClose}
+        style={customModalStyles}
+      >
+        <h2 className="text-xl font-bold mb-4">
+          {isProfit ? <FaTrophy className="inline mr-2 text-yellow-500" /> : '❌'} Result
+        </h2>
+        <p>{modalMessage}</p>
+        <button
+          onClick={handleModalClose}
+          className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
         >
-          <h2 className={`text-lg font-bold mb-2 ${isProfit ? 'text-green-500' : 'text-green-500'}`}>
-            {isProfit ? 'Profit Made!' : 'Profit Made!'}
-          </h2>
-          <FaTrophy className='text-yellow-500 text-center mb-1' size={40}/>
-          <p className="text-sm">{modalMessage}</p>
-          <button
-            onClick={handleModalClose}
-            className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-          >
-            Close
-          </button>
-        </motion.div>
+          Close
+        </button>
       </Modal>
     </div>
   );
