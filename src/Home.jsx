@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import B1 from './assets/Bitcoin.png';
 import B2 from './assets/Doge.png';
 import B3 from './assets/Dollar.png';
-<<<<<<< HEAD
+
 import B4 from './assets/Dollar.png'; // Add your new stock images
 import B5 from './assets/Dollar.png';
 import B6 from './assets/Dollar.png';
@@ -16,10 +16,10 @@ import B11 from './assets/Dollar.png';
 import B12 from './assets/Dollar.png';
 import B13 from './assets/Dollar.png';
 import './index.css';
-=======
+
 import './index.css';
 import { useState } from 'react';
->>>>>>> dc141552ab8cda1c34f01e3aed739f4bf757e5b6
+
 import FeedbackModal from './components/FeedbackModal'; 
 import BetPage from './BetPage';
 
