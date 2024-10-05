@@ -10,28 +10,6 @@ body {
   background-color: #222831;
 }
 /* Add this CSS to your global CSS file */
-.shining-box {
-  position: relative;
-  overflow: hidden;
+.black-and-white {
+  filter: grayscale(50%);
 }
-
-.shining-box::before {
-  content: '';
-  position: absolute;
-  top: -100%;
-  left: -100%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0) 25%);
-  animation: shine 3s infinite linear;
-}
-
-@keyframes shine {
-  0% {
-    transform: translateX(0) translateY(0);
-  }
-  100% {
-    transform: translateX(100%) translateY(100%);
-  }
-}
-
