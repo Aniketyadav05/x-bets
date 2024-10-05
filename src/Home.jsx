@@ -18,7 +18,7 @@ import B13 from './assets/Dollar.png';
 import './index.css';
 
 import './index.css';
-import { useState } from 'react';
+
 
 import FeedbackModal from './components/FeedbackModal'; 
 import BetPage from './BetPage';
