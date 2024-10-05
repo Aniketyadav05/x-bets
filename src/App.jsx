@@ -5,17 +5,20 @@ import Header from './components/Header'; // Assuming you have a Header componen
 import Home from './Home';
 import Footer from './components/Footer';
 import BetPage from './BetPage'; // Import your BetPage component
+import { BalanceProvider } from './components/BalanceContext';
 
 function App() {
   return (
+    <BalanceProvider>
     <Router>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/bet/:stockName" element={<BetPage />} /> {/* This route takes stockName as a parameter */}
+        
       </Routes>
       <Footer/>
     </Router>
+    </BalanceProvider>
   );
 }
 
