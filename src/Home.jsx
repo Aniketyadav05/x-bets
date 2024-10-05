@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import B1 from './assets/Bitcoin.png';
 import B2 from './assets/Doge.png';
 import B3 from './assets/Dollar.png';
-import './Index.css';
+import './index.css';
 import { useState } from 'react';
 import FeedbackModal from './components/FeedbackModal'; 
 
