@@ -18,16 +18,16 @@ const StockChart = () => {
   const [stockData, setStockData] = useState([]);
   const lastValueRef = useRef(100); // Starting price
   const maxChange = 0.5; // Maximum change per second
-  const numPoints = 50; // Maximum number of data points to display
+  const numPoints = 10000; // Maximum number of data points to display
 
   // Function to generate initial random data points
   const generateInitialData = () => {
     let initialData = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 300; i++) {
       const change = (Math.random() - 0.5) * maxChange;
       const newValue = Math.max(0, (lastValueRef.current + change).toFixed(2));
       lastValueRef.current = newValue;
-      initialData.push({ x: new Date(Date.now() - (20 - i) * 1000), y: newValue });
+      initialData.push({ x: new Date(Date.now() - (300 - i) * 1000), y: newValue });
     }
     return initialData;
   };
@@ -74,7 +74,7 @@ const StockChart = () => {
       data: lineData,
       borderColor: lineData.map(point => point.color), // Apply colors based on the condition
       borderWidth: 3,
-      tension: 0.4, // Smooth line
+      tension: 0.09, // Smooth line
       fill: false,
     };
   };

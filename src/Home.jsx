@@ -120,7 +120,7 @@ const Home = () => {
 
       {/* Animated Testimonials Section */}
       <div className="w-full overflow-hidden">
-        <h2 className="text-3xl font-extrabold text-red-300 mb-6 text-center mt-10">What Our Users Say</h2>
+        <h2 className="text-3xl font-extrabold text-red-300 mb-6 text-center mt-24 lg:mt-0">What Our Users Say</h2>
 
         {/* Row 1: Testimonials moving infinitely */}
         <motion.div
