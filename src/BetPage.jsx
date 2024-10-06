@@ -180,12 +180,12 @@ const BetPage = ({ selectedCoin }) => {
     <div className="flex flex-col lg:flex-row">
       <div className="flex-1 p-4">
         <h2 className="text-xl font-semibold">Your Balance: ₹{balance}</h2>
-        <div className="h-96 lg:h-[600px] w-[400px] lg:w-full">
+        <div className="h-96 lg:h-[600px] w-[350px] lg:w-full">
           <StockChart priceData={priceData} />
         </div>
       </div>
 
-      <div className="relative w-[400px] lg:w-72  p-4 flex flex-col mt-24 lg:mt-8">
+      <div className="relative w-[375px] lg:w-72  p-4 flex flex-col mt-24 lg:mt-8">
         <div className="border border-gray-300 p-4 rounded-lg bg-gray-50 mt-2 mb-2 z-10 top-0 left-0 right-0">
           <div className="flex flex-row items-center justify-between">
             <h4 className="font-semibold">Select Amount</h4>
