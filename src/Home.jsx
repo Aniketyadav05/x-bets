@@ -4,16 +4,13 @@ import { Link } from 'react-router-dom';
 import B1 from './assets/Bitcoin.png';
 import B2 from './assets/Doge.png';
 import B3 from './assets/Dollar.png';
-import B4 from './assets/Dollar.png'; // Add your new stock images
-import B5 from './assets/Dollar.png';
-import B6 from './assets/Dollar.png';
-import B7 from './assets/Dollar.png';
-import B8 from './assets/Dollar.png';
-import B9 from './assets/Dollar.png';
-import B10 from './assets/Dollar.png';
-import B11 from './assets/Dollar.png';
-import B12 from './assets/Dollar.png';
-import B13 from './assets/Dollar.png';
+import B4 from './assets/cad.png'; // Add your new stock images
+import B5 from './assets/eth.png';
+import B6 from './assets/tet.png';
+import B7 from './assets/xrp.png';
+import B8 from './assets/monero.png';
+import B9 from './assets/solana.png';
+
 import './index.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css'; 
@@ -48,10 +45,7 @@ const Home = () => {
     { name: "Stock 7", image: B7 },
     { name: "Stock 8", image: B8 },
     { name: "Stock 9", image: B9 },
-    { name: "Stock 10", image: B10 },
-    { name: "Stock 11", image: B11 },
-    { name: "Stock 12", image: B12 },
-    { name: "Stock 13", image: B13 },
+
   ];
 
   // Testimonials and FAQs data (unchanged)
@@ -72,7 +66,7 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full bg-[#1F4172] relative ">
       {/* Transparent Boxes with Hover Animation and BET Link */}
-      <div className="flex gap-8 justify-center items-center mt-4 lg:w-[1400px] w-[350px]">
+      <div className="flex gap-8 justify-center items-center mt-4 lg:w-[1000px] w-[350px]">
         <Swiper
           slidesPerView={5} // Show 4 coins on mobile
           spaceBetween={5} // Space between slides
@@ -83,8 +77,8 @@ const Home = () => {
               spaceBetween: 10,
             },
             1024: {
-              slidesPerView: 10, // Show more on larger screens
-              spaceBetween: 5,
+              slidesPerView: 9, // Show more on larger screens
+              spaceBetween: 20,
             },
           }}
         >
