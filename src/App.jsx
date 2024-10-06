@@ -54,7 +54,7 @@ function App() {
 
           {/* Show login page overlay when not logged in */}
           {!isLoggedIn && (
-            <div className="fixed top-0 left-0 lg:w-full w-[100px]  h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <div className="fixed lg:top-40 top-20 lg:left-[600px] left-0 lg:w-[350px] h-[350px] flex justify-center items-center bg-black bg-opacity-50">
               <LoginPage onLogin={handleLogin} />
             </div>
           )}

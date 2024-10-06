@@ -17,8 +17,8 @@ const LoginPage = ({ onLogin }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h2 className="text-2xl font-semibold mb-4">Sign Up / Log In</h2>
+    <div className="flex flex-col items-center justify-center h-[400px] bg-gray-100">
+      <h2 className="text-2xl font-semibold mb-4">Sign Up </h2>
       <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-96">
         <div className="mb-4">
           <label className="block text-gray-700">Username:</label>
