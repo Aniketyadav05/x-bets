@@ -114,7 +114,7 @@ const Home = () => {
       </div>
 
       {/* Pass selectedCoin as a prop to BetPage */}
-      <div className="w-full h-[calc(100vh-64px)] mt-8">
+      <div className="w-full h-[calc(100vh-64px)] mt-8 mb-56 lg:mb-0">
         {selectedCoin ? <BetPage selectedCoin={selectedCoin} /> : <p className="text-white">Please select a coin to bet on.</p>}
       </div>
 
