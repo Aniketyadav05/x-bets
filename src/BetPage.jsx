@@ -68,7 +68,7 @@ const BetPage = ({ selectedCoin }) => {
       backgroundColor: '#fff',
       color: '#000',
       width: '400px',
-      maxWidth: '90%',
+      maxWidth: '400px',
       zIndex: 1001, // Ensure the modal content is above other elements
     },
   };

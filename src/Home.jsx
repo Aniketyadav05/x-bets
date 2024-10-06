@@ -114,13 +114,13 @@ const Home = () => {
       </div>
 
       {/* Pass selectedCoin as a prop to BetPage */}
-      <div className="w-full h-[calc(100vh-64px)] mt-8 mb-56 lg:mb-0">
+      <div className="w-full h-[calc(100vh-64px)] mt-8 mb-64 lg:mb-0">
         {selectedCoin ? <BetPage selectedCoin={selectedCoin} /> : <p className="text-white">Please select a coin to bet on.</p>}
       </div>
 
       {/* Animated Testimonials Section */}
       <div className="w-full overflow-hidden">
-        <h2 className="text-3xl font-extrabold text-red-300 mb-6 text-center">What Our Users Say</h2>
+        <h2 className="text-3xl font-extrabold text-red-300 mb-6 text-center mt-10">What Our Users Say</h2>
 
         {/* Row 1: Testimonials moving infinitely */}
         <motion.div
