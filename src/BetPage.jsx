@@ -180,7 +180,7 @@ const BetPage = ({ selectedCoin }) => {
     <div className="flex flex-col lg:flex-row">
       <div className="flex-1 p-4">
         <h2 className="text-xl font-semibold">Your Balance: ₹{balance}</h2>
-        <div className="h-96 lg:h-[600px] w-[350px] lg:w-full">
+        <div className="h-96 lg:h-[600px] w-[360px] lg:w-full">
           <StockChart priceData={priceData} />
         </div>
       </div>
@@ -233,6 +233,7 @@ const BetPage = ({ selectedCoin }) => {
         isOpen={modalIsOpen}
         onRequestClose={handleCloseModal}
         style={customModalStyles}
+        className='mx-4'
       >
         <h2>Withdrawal Confirmation</h2>
         <p>{modalMessage}</p>
