@@ -192,14 +192,14 @@ const BetPage = ({ selectedCoin }) => {
                 </button>
               ))}
             </div>
-            {selectedAmount && selectedLeverage && (
+          
               <button
                 onClick={showOptions === 'buy' ? handleBuy : handleSell}
                 className="mt-4 w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
               >
                 {showOptions === 'buy' ? 'Confirm Buy' : 'Confirm Sell'}
               </button>
-            )}
+          
           </div>
         )}
 
