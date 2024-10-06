@@ -33,7 +33,7 @@ const BetPage = ({ selectedCoin }) => {
   const { balance, setBalance } = useContext(BalanceContext);
   const [showOptions, setShowOptions] = useState(null);
   const [selectedAmount, setSelectedAmount] = useState(null);
-  const [selectedLeverage, setSelectedLeverage] = useState(null);
+
   const [purchasePrice, setPurchasePrice] = useState(null);
   const [sellPrice, setSellPrice] = useState(null);
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -42,8 +42,8 @@ const BetPage = ({ selectedCoin }) => {
   const [modalMessage, setModalMessage] = useState('');
   const [lineColor, setLineColor] = useState('rgba(75,192,192,1)');
 
-  const amountOptions = [50, 100, 500, 1000];
-  const leverageOptions = [1, 5, 10, 20, 50, 100];
+  const amountOptions = [99, 149, 499, 999];
+  
 
   const currentTime = new Date();
   const dataPoints = 50;
@@ -64,10 +64,10 @@ const BetPage = ({ selectedCoin }) => {
 
     if (purchasePrice !== null) {
       const profitOrLoss = latestPrice - purchasePrice;
-      setProfitLoss(profitOrLoss * selectedLeverage);
+      setProfitLoss(profitOrLoss * 4);
       setLineColor(profitOrLoss > 0 ? 'rgba(75,192,192,1)' : 'rgba(255, 99, 132, 1)');
     }
-  }, [priceData, purchasePrice, selectedLeverage]);
+  }, [priceData, purchasePrice, 4]);
 
   const data = {
     datasets: [
@@ -97,7 +97,7 @@ const BetPage = ({ selectedCoin }) => {
   const handleBuySellClick = (action) => {
     setShowOptions(action);
     setSelectedAmount(null);
-    setSelectedLeverage(null);
+    
   };
 
   const handleBuy = () => {
@@ -111,7 +111,7 @@ const BetPage = ({ selectedCoin }) => {
       )
     );
 
-    const profit = randomIncrease * selectedLeverage;
+    const profit = randomIncrease * 4;
     setBalance((prevBalance) => prevBalance + profit);
     setModalMessage(`💸 You made a profit of ₹${profit.toFixed(2)}!`);
     setModalIsOpen(true);
@@ -129,7 +129,7 @@ const BetPage = ({ selectedCoin }) => {
       )
     );
 
-    const profit = (latestPrice - purchasePrice) * selectedLeverage;
+    const profit = (latestPrice - purchasePrice) * 4;
     setModalMessage(`💸 You made a profit of ₹${profit.toFixed(2)}!`);
     setModalIsOpen(true);
     setShowOptions(null); // Close the options modal
@@ -180,18 +180,7 @@ const BetPage = ({ selectedCoin }) => {
                 </button>
               ))}
             </div>
-            <h4 className="font-semibold mt-4">Select Leverage</h4>
-            <div className="grid grid-cols-2 gap-2 mt-2">
-              {leverageOptions.map((leverage) => (
-                <button
-                  key={leverage}
-                  onClick={() => setSelectedLeverage(leverage)}
-                  className={`py-2 border border-gray-300 rounded-lg ${selectedLeverage === leverage ? 'bg-green-400' : ''}`}
-                >
-                  {leverage}x
-                </button>
-              ))}
-            </div>
+            
           
               <button
                 onClick={showOptions === 'buy' ? handleBuy : handleSell}
