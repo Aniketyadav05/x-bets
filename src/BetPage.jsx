@@ -144,7 +144,7 @@ const BetPage = ({ selectedCoin }) => {
         </div>
       </div>
 
-      <div className="w-full lg:w-72 p-4">
+      <div className="relative w-full lg:w-72 p-4">
         <button
           onClick={() => handleBuySellClick('buy')}
           className="mb-2 w-full py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition"
@@ -159,16 +159,15 @@ const BetPage = ({ selectedCoin }) => {
         </button>
 
         {showOptions && (
-          <div className="border border-gray-300 p-4 rounded-lg bg-gray-50 mt-2">
+          <div className="border border-gray-300 p-4 rounded-lg bg-gray-50 mt-2 absolute z-10 top-0 left-0 right-0">
             <div className='flex flex-row items-center justify-between'>
-            
-            <h4 className="font-semibold">Select Amount</h4>
-            <button
-              onClick={() => setShowOptions(null)}
-              className="py-2"
-            >
-              <FaTimes  />
-            </button>
+              <h4 className="font-semibold">Select Amount</h4>
+              <button
+                onClick={() => setShowOptions(null)}
+                className="py-2"
+              >
+                <FaTimes />
+              </button>
             </div>
             <div className="grid grid-cols-2 gap-2 mt-2">
               {amountOptions.map((amount) => (
@@ -201,14 +200,8 @@ const BetPage = ({ selectedCoin }) => {
                 {showOptions === 'buy' ? 'Confirm Buy' : 'Confirm Sell'}
               </button>
             )}
-          
-
-            {/* Close Button to close options modal */}
-            
-            
           </div>
         )}
-  </div>
 
         <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={customModalStyles}>
           <h2>{modalMessage}</h2>
@@ -217,7 +210,8 @@ const BetPage = ({ selectedCoin }) => {
           </button>
         </Modal>
       </div>
-      );
+    </div>
+  );
 };
 
-      export default BetPage;
+export default BetPage;
