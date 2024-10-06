@@ -39,12 +39,16 @@ const Header = () => {
             onMouseEnter={() => setShowDropdown(true)}
             className="relative" // To position the dropdown 
           >
+
             <div
               className="hover:text-[#399918] flex items-center space-x-2 mr-10 cursor-pointer"
             >
               <FaUser />
               <span>User</span>
             </div>
+
+           
+
             {showDropdown && (
               <div
                 ref={dropdownRef}

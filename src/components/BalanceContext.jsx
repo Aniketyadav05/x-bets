@@ -1,3 +1,4 @@
+
 import React, { createContext, useState } from 'react';
 
 export const BalanceContext = createContext();
@@ -11,3 +12,4 @@ export const BalanceProvider = ({ children }) => {
     </BalanceContext.Provider>
   );
 };
+

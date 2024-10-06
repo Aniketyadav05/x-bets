@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css'; // Import Swiper styles
+import { Link } from 'react-router-dom'; 
 import B1 from './assets/Bitcoin.png';
 import B2 from './assets/Doge.png';
 import B3 from './assets/Dollar.png';
-
 import B4 from './assets/Dollar.png'; // Add your new stock images
 import B5 from './assets/Dollar.png';
 import B6 from './assets/Dollar.png';
@@ -18,18 +15,22 @@ import B11 from './assets/Dollar.png';
 import B12 from './assets/Dollar.png';
 import B13 from './assets/Dollar.png';
 import './index.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css'; 
 
-import FeedbackModal from './components/FeedbackModal';
+import FeedbackModal from './components/FeedbackModal'; 
 import BetPage from './BetPage';
 
 const Home = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState(null); // State to store selected coin
   const [balance, setBalance] = useState(1000);
+  const [displayedCoins, setDisplayedCoins] = useState([]); // State to hold the displayed coins
 
   // Automatically select the first coin on mount
   useEffect(() => {
     setSelectedCoin(stocks[0].name); // Set the first stock as selected
+    setDisplayedCoins(stocks.slice(0, 4)); // Display only the first 4 stocks initially
   }, []); // Empty dependency array means this runs once when component mounts
 
   const handleCoinClick = (coin) => {
@@ -70,49 +71,43 @@ const Home = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full bg-[#1F4172] relative ">
-      {/* Swiper for Transparent Boxes with BET Link */}
-      <div className="flex  justify-center items-center mt-4 lg:w-[1400px] w-[400px]">
+      {/* Transparent Boxes with Hover Animation and BET Link */}
+      <div className="flex gap-8 justify-center items-center mt-4 lg:w-[1400px] w-[350px]">
         <Swiper
           slidesPerView={5} // Show 4 coins on mobile
-          spaceBetween={4}
+          spaceBetween={5} // Space between slides
           breakpoints={{
             // Responsive settings
             640: {
               slidesPerView: 4,
-              spaceBetween: 0,
-            },
-            720: {
-              slidesPerView: 4,
-              spaceBetween: 0,
+              spaceBetween: 10,
             },
             1024: {
               slidesPerView: 10, // Show more on larger screens
-              spaceBetween: 2,
+              spaceBetween: 5,
             },
           }}
         >
           {stocks.map((stock) => (
             <SwiperSlide key={stock.name}>
-              <motion.div
-
-                className={`relative bg-white bg-opacity-10 backdrop-blur-sm p-2 rounded-lg shadow-lg group w-16 h-16 ${selectedCoin === stock.name ? "bg-yellow-500 bg-opacity-100" : "black-and-white"}`} // Darker background when selected
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+              <div 
+                className={`relative shining-box bg-white bg-opacity-10 backdrop-blur-sm p-2 rounded-lg shadow-lg group w-16 h-16 ${selectedCoin === stock.name ? "bg-yellow-500 bg-opacity-100" : "black-and-white"}`} // Darker background when selected
               >
                 <motion.img
                   src={stock.image}
                   alt={stock.name}
                   className="w-full h-full object-cover rounded-lg"
-
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                 />
-                <Link
-                  to="/"
+                <Link 
+                  to="/" 
                   className={`absolute inset-0 flex items-center justify-center text-lg font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black bg-opacity-70 rounded-lg ${selectedCoin === stock.name ? "bg-yellow-500 bg-opacity-100" : ""}`}
                   onClick={() => handleCoinClick(stock.name)} // Set the selected coin on click
                 >
                   BET
                 </Link>
-              </motion.div>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -140,8 +135,8 @@ const Home = () => {
         >
           {/* Render two sets of testimonials for a seamless loop */}
           {[...testimonials, ...testimonials].map((testimonial, index) => (
-            <div
-              key={index}
+            <div 
+              key={index} 
               className="bg-[#1F4172] p-6 rounded-lg shadow-lg text-white w-fit flex-shrink-0 cursor-pointer"
             >
               <p className="italic">"{testimonial.feedback}"</p>
@@ -152,11 +147,11 @@ const Home = () => {
       </div>
 
       {/* FAQs Section */}
-      <div className="mt-20 mx-4 lg:w-[1400px] w-[350px]">
-        <h2 className="text-3xl mb-6 font-extrabold text-red-300 text-center">Frequently Asked Questions</h2>
+      <div className="my-20 mx-4 lg:w-[1400px] w-[350px]">
+        <h2 className="text-3xl mb-6 font-extrabold text-red-300">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-[#1F4172] p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105 cursor-pointer ">
+            <div key={index} className="bg-[#1F4172] p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105 cursor-pointer">
               <h4 className="font-bold">{faq.question}</h4>
               <p>{faq.answer}</p>
             </div>
@@ -180,8 +175,8 @@ const Home = () => {
       </div>
 
       {/* Feedback Modal */}
-      <FeedbackModal
-        isOpen={isModalOpen}
+      <FeedbackModal 
+        isOpen={isModalOpen} 
         onClose={() => setModalOpen(false)} // Pass the close handler
       />
     </div>
